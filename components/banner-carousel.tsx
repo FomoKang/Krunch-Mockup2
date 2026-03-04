@@ -2,11 +2,11 @@
 
 import { useCallback, useEffect, useState } from "react"
 import Image from "next/image"
-import { ChevronLeft, ChevronRight } from "lucide-react"
 import useEmblaCarousel from "embla-carousel-react"
 
 const BANNERS = [
   { src: "/banner-kpop.png", alt: "IVE" },
+  { src: "/banner-group.png", alt: "K-pop group" },
 ]
 
 export function BannerCarousel() {
@@ -14,11 +14,9 @@ export function BannerCarousel() {
     loop: true,
     align: "start",
     dragFree: false,
+    containScroll: "trimSnaps",
   })
   const [selectedIndex, setSelectedIndex] = useState(0)
-
-  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi])
-  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi])
 
   const onSelect = useCallback(() => {
     if (!emblaApi) return
@@ -35,62 +33,49 @@ export function BannerCarousel() {
   if (BANNERS.length === 0) return null
 
   return (
-    <section className="px-4 py-4 lg:px-6">
-      <div className="relative overflow-hidden">
-        <div ref={emblaRef} className="overflow-hidden">
-          <div className="flex touch-pan-x">
+    <section className="px-4 py-4 lg:px-8">
+      <div className="relative overflow-hidden lg:mx-auto lg:max-w-6xl">
+        <div ref={emblaRef} className="overflow-hidden cursor-grab active:cursor-grabbing">
+          <div className="flex">
             {BANNERS.map((banner, i) => (
               <div
                 key={i}
-                className="min-w-0 flex-[0_0_100%] flex-shrink-0 px-0"
+                className="relative min-w-0 flex-[0_0_100%] flex-shrink-0 px-0"
               >
-                <div className="relative aspect-[21/12] w-full overflow-hidden rounded-2xl bg-secondary">
+                <div className="relative aspect-[21/12] w-full overflow-hidden rounded-2xl bg-secondary lg:aspect-[21/9] lg:max-h-[360px]">
                   <Image
                     src={banner.src}
                     alt={banner.alt}
                     fill
-                    className="object-cover object-center"
+                    className="pointer-events-none select-none object-cover object-center lg:object-[center_30%]"
                     priority={i === 0}
-                    sizes="(max-width: 768px) 100vw, 1200px"
+                    sizes="(max-width: 1024px) 100vw, 1152px"
+                    draggable={false}
                   />
                 </div>
               </div>
             ))}
           </div>
         </div>
-
+        {/* 가로바 인디케이터 - 젠틀몬스터 스타일, 배너 하단 오버레이 */}
         {BANNERS.length > 1 && (
-          <>
-            <button
-              type="button"
-              onClick={scrollPrev}
-              className="absolute left-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-background/60 p-2 text-foreground backdrop-blur-sm hover:bg-background/80"
-              aria-label="Previous"
-            >
-              <ChevronLeft className="h-5 w-5" />
-            </button>
-            <button
-              type="button"
-              onClick={scrollNext}
-              className="absolute right-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-background/60 p-2 text-foreground backdrop-blur-sm hover:bg-background/80"
-              aria-label="Next"
-            >
-              <ChevronRight className="h-5 w-5" />
-            </button>
-            <div className="mt-3 flex justify-center gap-1.5">
-              {BANNERS.map((_, i) => (
+          <div className="absolute bottom-4 left-1/2 z-10 -translate-x-1/2">
+            <div className="flex h-0.5 items-center gap-1.5">
+              {BANNERS.map((_, idx) => (
                 <button
-                  key={i}
+                  key={idx}
                   type="button"
-                  onClick={() => emblaApi?.scrollTo(i)}
-                  className={`h-1.5 w-1.5 rounded-full transition-colors ${
-                    i === selectedIndex ? "bg-foreground" : "bg-muted-foreground/40"
+                  onClick={() => emblaApi?.scrollTo(idx)}
+                  className={`h-0.5 shrink-0 rounded-full transition-all duration-300 ${
+                    idx === selectedIndex
+                      ? "w-6 bg-white"
+                      : "w-2 bg-white/40 hover:bg-white/60"
                   }`}
-                  aria-label={`Go to slide ${i + 1}`}
+                  aria-label={`Go to slide ${idx + 1}`}
                 />
               ))}
             </div>
-          </>
+          </div>
         )}
       </div>
     </section>

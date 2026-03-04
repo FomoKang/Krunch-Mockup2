@@ -100,6 +100,17 @@ export default function DrawPage() {
     }
   }, [])
 
+  const handlePointerCancel = useCallback((e: React.PointerEvent) => {
+    try {
+      trackRef.current?.releasePointerCapture(e.pointerId)
+    } catch {}
+    if (!isDraggingRef.current) return
+    isDraggingRef.current = false
+    setSliderPos(0)
+    setDrawState("ready")
+    sliderPosRef.current = 0
+  }, [])
+
   const handleOpenRare = () => setDrawState("reveal")
   const handleReset = () => setDrawState("ready")
 
@@ -182,7 +193,10 @@ export default function DrawPage() {
               onPointerDown={handlePointerDown}
               onPointerMove={handlePointerMove}
               onPointerUp={handlePointerUp}
-              className="relative flex h-14 w-full cursor-grab items-center border-t border-border px-4 active:cursor-grabbing"
+              onPointerLeave={handlePointerCancel}
+              onPointerCancel={handlePointerCancel}
+              style={{ touchAction: "none" }}
+              className="relative flex h-14 w-full select-none cursor-grab items-center border-t border-border px-4 active:cursor-grabbing"
             >
               {/* 까만 트랙 */}
               <div className="absolute inset-0 bg-foreground" />

@@ -25,7 +25,7 @@ function AuctionSection({
 }) {
   return (
     <section className="border-b border-border">
-      <div className="flex items-baseline justify-between px-4 py-4 lg:px-6">
+      <div className="flex items-baseline justify-between px-4 py-4 lg:px-8">
         <h2 className="font-serif text-[1.4375rem] font-bold italic leading-none tracking-tight text-foreground">
           {title}
         </h2>
@@ -37,7 +37,7 @@ function AuctionSection({
         </Link>
       </div>
       <div className="overflow-x-auto pb-2 scrollbar-hide">
-        <div className="flex gap-4 px-4 pb-6 lg:px-6" style={{ width: "max-content" }}>
+        <div className="flex gap-4 px-4 pb-6 lg:px-8" style={{ width: "max-content" }}>
           {leadCard}
           {items.map((item) => (
             <div key={item.id} className="w-[200px] flex-shrink-0 sm:w-[240px] lg:w-[280px]">
@@ -147,11 +147,12 @@ export default function HomePage() {
 
   return (
     <main className="min-h-screen bg-background pb-24">
+      <div className="lg:mx-auto lg:max-w-6xl">
       {/* Banner - 가로 횡 스크롤 (아이브 등) */}
       <BannerCarousel />
 
       {/* Search */}
-      <section className="border-b border-border bg-background px-4 py-4">
+      <section className="border-b border-border bg-background px-4 py-4 lg:px-8">
         <div className="flex items-center gap-2.5 rounded-none border border-border bg-card px-4 py-3">
           <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
           <input
@@ -184,6 +185,7 @@ export default function HomePage() {
           </p>
         </div>
       )}
+      </div>
 
       <BottomNav />
     </main>
