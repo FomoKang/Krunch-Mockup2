@@ -3,7 +3,7 @@ import Link from "next/link"
 interface KrunchLogoProps {
   /** 메인 로고 텍스트 (기본: KRUNCH) */
   title?: string
-  /** 태그라인 (기본: OWN WHAT THEY WORE) */
+  /** 태그라인 (기본: Own That Moment) */
   tagline?: string
   /** 부제목 (기본: KPOP Stage Costume Auction Platform) */
   subtitle?: string
@@ -15,7 +15,7 @@ interface KrunchLogoProps {
 
 export function KrunchLogo({
   title = "KRUNCH",
-  tagline = "Own Your Star's Moment",
+  tagline = "Own That Moment",
   subtitle = "KPOP Stage Costume Auction Platform",
   href = "/",
   compact = false,
@@ -23,7 +23,7 @@ export function KrunchLogo({
   const content = (
     <div className={`flex flex-col gap-0.5 ${compact ? "gap-0" : ""}`}>
       <span
-        className={`font-serif font-bold tracking-tight text-white ${
+        className={`font-serif font-bold tracking-tight text-foreground ${
           compact ? "text-[1.35rem]" : "text-[1.8rem]"
         }`}
       >

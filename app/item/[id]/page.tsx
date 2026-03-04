@@ -1,13 +1,45 @@
 "use client"
 
-import { use, useState } from "react"
-import Image from "next/image"
+import { use, useState, useEffect } from "react"
 import Link from "next/link"
 import { ArrowLeft, Heart, MoreHorizontal } from "lucide-react"
 import { auctionItems, formatKRW } from "@/lib/data"
 import { CountdownTimer } from "@/components/countdown-timer"
 import { OfferInput } from "@/components/offer-input"
 import { BottomNav } from "@/components/bottom-nav"
+
+/** Mock bid history entry - 실제 구현 시 API 연동 */
+type BidEntry = { id: string; amount: number; time: string; rank: number; name: string }
+
+function useBidHistory(itemId: string, baseOffer: number) {
+  const [entries, setEntries] = useState<BidEntry[]>([])
+
+  useEffect(() => {
+    const names = ["K***7", "B***n", "J***k", "S***y", "M***a", "R***2", "T***3", "L***9", "N***4", "P***1"]
+    const generate = (): BidEntry[] => {
+      const count = 8 + Math.floor(Math.random() * 5)
+      return Array.from({ length: count }, (_, i) => {
+        const offset = Math.floor(Math.random() * 200000) - 50000
+        const amount = Math.max(100000, baseOffer + offset - i * 50000)
+        const mins = Math.floor(Math.random() * 60)
+        return {
+          id: `bid-${Date.now()}-${i}`,
+          amount,
+          time: mins === 0 ? "Just now" : `${mins}m ago`,
+          rank: i + 1,
+          name: names[i % names.length],
+        }
+      })
+        .sort((a, b) => b.amount - a.amount)
+        .map((e, i) => ({ ...e, rank: i + 1 }))
+    }
+    setEntries(generate())
+    const interval = setInterval(() => setEntries(generate()), 8000)
+    return () => clearInterval(interval)
+  }, [itemId, baseOffer])
+
+  return entries
+}
 
 export default function ItemDetailPage({
   params,
@@ -16,9 +48,10 @@ export default function ItemDetailPage({
 }) {
   const { id } = use(params)
   const item = auctionItems.find((i) => i.id === id)
-  const [activeTab, setActiveTab] = useState<"new" | "bid">("new")
+  const [activeTab, setActiveTab] = useState<"bidding" | "history">("bidding")
   const [offerSubmitted, setOfferSubmitted] = useState(false)
   const [isSaved, setIsSaved] = useState(false)
+  const bidHistory = useBidHistory(id, item?.topOffer ?? 0)
 
   if (!item) {
     return (
@@ -33,15 +66,14 @@ export default function ItemDetailPage({
     )
   }
 
-  const hasImages = item.images.length > 0
   const relatedItems = auctionItems.filter(
     (i) => i.artist === item.artist && i.id !== item.id
   )
 
   return (
     <div className="min-h-screen bg-background pb-24">
-      {/* Sticky Header */}
-      <header className="sticky top-0 z-50 flex items-center justify-between border-b border-border/50 bg-background/95 px-4 py-3 backdrop-blur-md">
+      {/* Sticky Header - below TopHeader */}
+      <header className="sticky top-14 z-50 flex items-center justify-between border-b border-border/50 bg-background/95 px-4 py-3 backdrop-blur-md">
         <Link href="/" className="flex items-center" aria-label="Go back">
           <ArrowLeft className="h-5 w-5 text-foreground" />
         </Link>
@@ -69,17 +101,7 @@ export default function ItemDetailPage({
         {/* LEFT COLUMN - Item Info */}
         <div className="lg:flex-1 lg:border-r lg:border-border">
           {/* Item Code Header */}
-          <div className="border-b border-border bg-card p-4 lg:flex lg:items-start lg:gap-4">
-            {hasImages && (
-              <div className="relative mr-3 hidden h-14 w-14 shrink-0 overflow-hidden lg:block">
-                <Image
-                  src={item.images[0]}
-                  alt=""
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            )}
+          <div className="border-b border-border bg-card p-4">
             <div>
               <p className="text-[9px] uppercase tracking-[0.2em] text-muted-foreground">
                 item code
@@ -94,46 +116,26 @@ export default function ItemDetailPage({
             </div>
           </div>
 
-          {/* Product Image - mobile only full-width */}
-          {hasImages && (
-            <div className="relative aspect-square w-full overflow-hidden bg-secondary lg:aspect-[4/3]">
-              <Image
-                src={item.images[0]}
-                alt={item.itemName}
-                fill
-                className="object-cover"
-                priority
-              />
-            </div>
-          )}
-
-          {/* Artist Name */}
-          <div className="px-5 pt-5">
+          {/* Artist Name - 지우 먼저 */}
+          <div className="border-b border-border px-5 py-4">
             <p className="font-serif text-xl font-bold text-foreground">{item.artist}</p>
           </div>
 
-          {/* Related Items Carousel */}
+          {/* Image placeholder - blank white */}
+          <div className="aspect-square w-full bg-white lg:aspect-[4/3]" />
+
+          {/* Related Items Carousel - blank white cells */}
           {relatedItems.length > 0 && (
             <div className="flex gap-2.5 overflow-x-auto px-5 py-4">
               {relatedItems.map((related) => (
                 <Link
                   key={related.id}
                   href={`/item/${related.id}`}
-                  className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden border border-border bg-secondary transition-all hover:border-foreground/30"
+                  className="flex h-16 w-16 shrink-0 items-center justify-center border border-border bg-white transition-all hover:border-foreground/30"
                 >
-                  {related.images.length > 0 ? (
-                    <Image
-                      src={related.images[0]}
-                      alt={related.itemName}
-                      width={64}
-                      height={64}
-                      className="h-full w-full object-cover"
-                    />
-                  ) : (
-                    <span className="font-serif text-xs text-muted-foreground/40">
-                      {related.itemName.slice(0, 4)}
-                    </span>
-                  )}
+                  <span className="font-serif text-xs text-muted-foreground/40">
+                    {related.itemName.slice(0, 4)}
+                  </span>
                 </Link>
               ))}
             </div>
@@ -187,54 +189,39 @@ export default function ItemDetailPage({
             </div>
           </div>
 
-          {/* Full-size reference images for items with images */}
-          {hasImages && (
-            <div className="grid grid-cols-2 gap-1 px-5 pb-6">
-              {item.images.map((img, i) => (
-                <div key={i} className="relative aspect-square overflow-hidden bg-secondary">
-                  <Image
-                    src={img}
-                    alt={`${item.itemName} reference ${i + 1}`}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              ))}
-            </div>
-          )}
         </div>
 
         {/* RIGHT COLUMN - Bidding */}
         <div className="lg:w-[420px] lg:shrink-0">
-          {/* Tabs: New / Bid */}
+          {/* Tabs: Bidding / History */}
           <div className="sticky top-12 z-30 border-b border-border bg-background">
             <div className="flex">
               <button
-                onClick={() => setActiveTab("new")}
+                onClick={() => setActiveTab("bidding")}
                 className={`flex-1 py-3.5 text-center text-xs font-semibold tracking-wide transition-colors ${
-                  activeTab === "new"
+                  activeTab === "bidding"
                     ? "border-b-2 border-foreground text-foreground"
                     : "text-muted-foreground hover:text-foreground/60"
                 }`}
               >
-                신상품
+                Bidding
               </button>
               <button
-                onClick={() => setActiveTab("bid")}
+                onClick={() => setActiveTab("history")}
                 className={`flex-1 py-3.5 text-center text-xs font-semibold tracking-wide transition-colors ${
-                  activeTab === "bid"
+                  activeTab === "history"
                     ? "border-b-2 border-foreground text-foreground"
                     : "text-muted-foreground hover:text-foreground/60"
                 }`}
               >
-                입찰
+                History
               </button>
             </div>
           </div>
 
           {/* Tab Content */}
           <div className="p-5">
-            {activeTab === "bid" ? (
+            {activeTab === "bidding" ? (
               <div className="flex flex-col gap-6">
                 {offerSubmitted ? (
                   <div className="flex flex-col items-center gap-3 py-10">
@@ -285,39 +272,42 @@ export default function ItemDetailPage({
                 />
               </div>
             ) : (
-              <div className="flex flex-col gap-5">
-                {/* Your Offer section at top for "new" tab too */}
-                <OfferInput onSubmit={() => {
-                  setActiveTab("bid")
-                  setOfferSubmitted(true)
-                }} />
-
-                {/* Stats below */}
-                <div className="flex items-start justify-between border-t border-border pt-5">
-                  <div>
-                    <p className="text-xs italic text-muted-foreground underline underline-offset-2">
-                      Top Offer
-                    </p>
-                    <p className="mt-1.5 text-xl font-bold tabular-nums text-foreground">
-                      {"KRW "}
-                      {formatKRW(item.topOffer)}
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-xs italic text-muted-foreground underline underline-offset-2">
-                      Offered Person
-                    </p>
-                    <p className="mt-1.5 text-xl font-bold tabular-nums text-foreground">
-                      {formatKRW(item.offeredPerson)}
-                    </p>
+              <div className="flex flex-col gap-4">
+                <div className="flex items-baseline justify-between">
+                  <p className="text-xs italic text-muted-foreground underline underline-offset-2">
+                    Bidding History
+                  </p>
+                  <span className="text-[9px] text-muted-foreground">
+                    Updates every 8s
+                  </span>
+                </div>
+                <div className="max-h-80 overflow-y-auto border border-border">
+                  <div className="divide-y divide-border">
+                    {bidHistory.map((entry) => (
+                      <div
+                        key={entry.id}
+                        className="flex items-center justify-between px-4 py-3"
+                      >
+                        <div className="flex items-center gap-3">
+                          <span className="w-5 text-right text-[10px] font-medium tabular-nums text-muted-foreground">
+                            {entry.rank}
+                          </span>
+                          <span className="text-xs text-foreground">
+                            {entry.name}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-xs font-bold tabular-nums text-foreground">
+                            KRW {formatKRW(entry.amount)}
+                          </span>
+                          <span className="text-[9px] text-muted-foreground">
+                            {entry.time}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
-
-                {/* Countdown */}
-                <CountdownTimer
-                  expirationDate={item.expirationDate}
-                  variant="compact"
-                />
               </div>
             )}
           </div>

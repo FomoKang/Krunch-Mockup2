@@ -20,6 +20,14 @@ export function CountdownTimer({ expirationDate, variant = "large" }: CountdownT
 
   const pad = (n: number) => String(n).padStart(2, "0")
 
+  const padDay = (n: number) => String(n).padStart(2, "0")
+  const dDay =
+    timeLeft.days > 0
+      ? `D-${padDay(timeLeft.days)}`
+      : timeLeft.total > 0
+        ? `${timeLeft.hours}h ${timeLeft.minutes}m`
+        : "종료"
+
   const units = [
     { label: "Day", value: pad(timeLeft.days) },
     { label: "Hour", value: pad(timeLeft.hours) },
@@ -45,7 +53,7 @@ export function CountdownTimer({ expirationDate, variant = "large" }: CountdownT
             </div>
           ))}
         </div>
-        <p className="text-[10px] text-muted-foreground">{expirationDate}</p>
+        <p className="text-[10px] text-muted-foreground">{dDay}</p>
       </div>
     )
   }
@@ -65,7 +73,7 @@ export function CountdownTimer({ expirationDate, variant = "large" }: CountdownT
           </div>
         ))}
       </div>
-      <p className="text-xs text-muted-foreground">{expirationDate}</p>
+      <p className="text-xs text-muted-foreground">{dDay}</p>
     </div>
   )
 }

@@ -4,10 +4,10 @@ import { BottomNav } from "@/components/bottom-nav"
 import { User, Settings, CreditCard, Heart, Package, ChevronRight, LogIn } from "lucide-react"
 
 const menuItems = [
-  { label: "내 입찰", labelEn: "My Bids", icon: CreditCard, count: 3 },
-  { label: "저장한 아이템", labelEn: "Saved Items", icon: Heart, count: 12 },
-  { label: "낙찰된 아이템", labelEn: "Won Items", icon: Package, count: 1 },
-  { label: "설정", labelEn: "Settings", icon: Settings },
+  { label: "My Bids", icon: CreditCard, count: 3 },
+  { label: "Saved Items", icon: Heart, count: 12 },
+  { label: "Won Items", icon: Package, count: 1 },
+  { label: "Settings", icon: Settings },
 ]
 
 export default function ProfilePage() {
@@ -38,7 +38,6 @@ export default function ProfilePage() {
             <item.icon className="h-4.5 w-4.5 text-muted-foreground" />
             <div className="flex flex-1 flex-col items-start">
               <span className="text-sm text-foreground">{item.label}</span>
-              <span className="text-[10px] text-muted-foreground">{item.labelEn}</span>
             </div>
             {item.count !== undefined && (
               <span className="min-w-[24px] text-center text-xs font-bold tabular-nums text-foreground">
@@ -56,7 +55,7 @@ export default function ProfilePage() {
           KRUNCH
         </p>
         <p className="mt-1 text-[9px] uppercase tracking-[0.3em] text-muted-foreground">
-          Own What They Wore
+          Own That Moment
         </p>
         <div className="mt-4 h-px w-12 bg-border" />
         <p className="mt-4 text-[10px] leading-relaxed text-muted-foreground/50">

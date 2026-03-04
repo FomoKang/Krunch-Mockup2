@@ -1,3 +1,6 @@
+/** D-Day 값 (메인 페이지 배지). 이 변수만 바꾸면 됨. 두 자리 표시 (D-10, D-09...) */
+export const DEMO_D_DAY = 10
+
 export interface AuctionItem {
   id: string
   artist: string
@@ -14,87 +17,152 @@ export interface AuctionItem {
   expirationDate: string
   category: "apparel" | "accessories" | "sneakers" | "artwork"
   isJustDropped: boolean
+  showJustDroppedBadge?: boolean
+  imageObjectFit?: "cover" | "contain"
+  imageScale?: number
+  imageTranslateY?: string
+  imageObjectPosition?: string
+  /** 메인 D-Day 배지. 없으면 DEMO_D_DAY 사용. 각 아이템마다 다르게 설정 */
+  demoDDay?: number
   eventName?: string
 }
 
 export const auctionItems: AuctionItem[] = [
   {
-    id: "gd-rose-coat",
-    artist: "G-Dragon",
-    artistKo: "지드래곤",
-    itemName: "Red Rose Half Coat - World Tour [Ubermensch]",
-    itemNameKo: "레드로즈 하프코트 - 월드투어 [Ubermensch]",
-    dressedDate: "2025-Jul-27",
+    id: "v-bts-veautiful-days",
+    artist: "V - BTS",
+    artistKo: "뷔",
+    itemName: "Photo Folio 'Veautiful Days'",
+    itemNameKo: "포토 폴리오 '뷰티풀 데이즈'",
+    dressedDate: "2024-Sep",
     description:
-      "This custom red rose half coat was worn by G-DRAGON during his 2025 World Tour. Fully covered with handcrafted faux roses, this piece embodies his theatrical stage presence and avant-garde fashion identity.",
+      "Brown velvet suit ensemble from V's BTS Photo Folio 'Veautiful Days'. Features a two-button blazer, matching trousers, and houndstooth-patterned accessory. The luxurious velvet captures V's sophisticated and dreamy aesthetic.",
     descriptionKo:
-      "해당 아이템은 지드래곤이 2025년 월드투어 [Ubermensch] 쿠알라룸푸르에서 착용한 커스터마이징 레드로즈 코트입니다. 전면에 핸드메이드 인조 장미를 촘촘히 배치한 이 디자인은 그의 무대 연출력과 패션 정체성을 상징적으로 담아냈습니다.",
+      "뷰의 BTS 포토 폴리오 '뷰티풀 데이즈'에 등장한 브라운 벨벳 수트 세트입니다. 투버튼 블레이저, 매칭 트라우저, 하운드스투스 패턴 악세서리로 구성된 이 의상은 뷰의 세련되고 몽환적인 에스테틱을 담아냅니다.",
     facts: [
-      { label: "colorway", value: "red black rose" },
-      { label: "size", value: "custom" },
-      { label: "season", value: "2025 World Tour" },
+      { label: "colorway", value: "brown velvet" },
+      { label: "design", value: "blazer / trousers / houndstooth accessory" },
+      { label: "series", value: "Veautiful Days Photo Folio" },
     ],
-    images: [
-      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-5hhg5i8brnPRs5re1fTMEmg1KTmoDR.png",
-    ],
-    topOffer: 1888888,
-    offeredPerson: 3882,
-    expirationDate: "2026-04-30",
+    images: ["/v-bts-veautiful-days-suit.png", "/v-bts-veautiful-days.png"],
+    topOffer: 12500000,
+    offeredPerson: 3420,
+    expirationDate: "2025-03-16",
     category: "apparel",
     isJustDropped: true,
-    eventName: "G-DRAGON 2025 World Tour [Ubermensch] in Kuala Lumpur",
+    showJustDroppedBadge: false,
+    imageObjectFit: "contain",
+    imageScale: 0.9,
+    demoDDay: 9,
+    eventName: "BTS Photo Folio 'Veautiful Days'",
   },
   {
-    id: "gd-pmo-cap",
-    artist: "G-Dragon",
-    artistKo: "지드래곤",
-    itemName: "PEACEMINUSONE Daisy Cap - Jacob & Co.",
-    itemNameKo: "피스마이너스원 데이지 캡 - 제이콥앤코",
-    dressedDate: "2025-Aug-8",
+    id: "jiwoo-rude",
+    artist: "Jiwoo - Hearts2Hearts",
+    artistKo: "지우 - Hearts2Hearts",
+    itemName: "RUDE! - MV & Fanmeeting",
+    itemNameKo: "RUDE! - 뮤직비디오 & 팬미팅",
+    dressedDate: "2025-Jan",
     description:
-      "When G-Dragon first met legendary jeweler Jacob & Co., he gifted him a PEACEMINUSONE daisy lapel pin, which Jacob then turned into jewelry in the magnificent way that only Jacob knows how.",
+      "Black sleeveless dress with white number and crest logo, worn by Jiwoo during RUDE! music video and fanmeeting activities. Features a fitted bodice, pleated flared skirt, and white stripe accents.",
     descriptionKo:
-      "지드래곤이 전설적인 보석 디자이너 Jacob & Co.를 처음 만났을 때, 그는 PEACEMINUSONE 데이지 라펠 핀을 선물했으며, Jacob은 이를 자신만의 화려한 방식으로 보석으로 변모시켰습니다.",
+      "Hearts2Hearts 지우가 RUDE! 뮤직비디오 및 팬미팅에서 착용한 블랙 소매없는 드레스입니다. 화이트 넘버와 크레스트 로고, 피티드 보디스와 플리츠 플레어 스커트, 화이트 스트라이프 악센트가 특징입니다.",
     facts: [
-      { label: "colorway", value: "black" },
-      { label: "size", value: "Free" },
-      { label: "SKU", value: "99HAA26B WHITE" },
+      { label: "colorway", value: "black / white" },
+      { label: "design", value: "sleeveless dress, pleated skirt" },
+      { label: "event", value: "RUDE! MV & Fanmeeting" },
     ],
-    images: [
-      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-fNzbtG1zCxM5So9bOYrBAL6o2Qx2QQ.png",
-    ],
-    topOffer: 1888888,
-    offeredPerson: 3882,
-    expirationDate: "2026-04-30",
-    category: "accessories",
+    images: ["/jiwoo-rude-dress.png", "/jiwoo-rude-stage.png"],
+    topOffer: 8900000,
+    offeredPerson: 2156,
+    expirationDate: "2025-03-16",
+    category: "apparel",
     isJustDropped: true,
-    eventName: "G-DRAGON 2025 World Tour [Ubermensch] in Hong Kong",
+    showJustDroppedBadge: false,
+    imageObjectFit: "contain",
+    imageScale: 1.25,
+    imageTranslateY: "7%",
+    imageObjectPosition: "center bottom",
+    demoDDay: 8,
+    eventName: "RUDE! - MV & Fanmeeting",
   },
   {
-    id: "shm-uefa-kit",
-    artist: "Son Heung Min",
-    artistKo: "손흥민",
-    itemName: "2025 UEFA Final Match-Worn Kit",
-    itemNameKo: "2025 UEFA 결승전 실착 유니폼",
-    dressedDate: "2025-May-21",
+    id: "taemin-veil",
+    artist: "Taemin - SHINee",
+    artistKo: "태민 - 샤이니",
+    itemName: "Veil in Las Vegas",
+    itemNameKo: "베일 인 라스베가스",
+    dressedDate: "2025-Jan",
     description:
-      'Tottenham Hotspur captain Son Heung Min wore this official uniform during the 2025 UEFA Final held in Bilbao, Spain. Featuring his signature green captain\'s armband and the iconic "AIA" sponsor print, the uniform represents a historic appearance in the European championship.',
+      "Navy blue leather biker jacket with white piping worn by Taemin during his Veil performances in Las Vegas. Features asymmetrical zipper, silver hardware, and contrasting satin lining.",
     descriptionKo:
-      "토트넘 홋스퍼 주장 손흥민이 2025 UEFA 결승전(스페인 빌바오)에서 실제 착용한 공식 유니폼은 유럽 챔피언십 결승 무대에서의 역사를 담고 있습니다.",
+      "태민이 라스베가스 베일 공연에서 착용한 네이비 블루 가죽 바이커 재킷입니다. 화이트 파이핑, 실버 하드웨어, 대비되는 새틴 안감이 특징입니다.",
     facts: [
-      { label: "type", value: "Official Match-Worn Kit" },
-      { label: "club", value: "Tottenham Hotspur" },
-      { label: "competition", value: "2025 UEFA Final" },
+      { label: "colorway", value: "navy blue / white piping" },
+      { label: "style", value: "biker jacket" },
+      { label: "event", value: "Veil in Las Vegas" },
     ],
-    images: [
-      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-NYwUT3QiFn7CiMKrawiTWHugNcSOQF.png",
-    ],
-    topOffer: 77770000,
-    offeredPerson: 4877,
-    expirationDate: "2026-05-31",
+    images: ["/taemin-veil-jacket.png", "/taemin-veil-stage.png"],
+    topOffer: 15800000,
+    offeredPerson: 2341,
+    expirationDate: "2025-03-16",
     category: "apparel",
     isJustDropped: false,
-    eventName: "2025 UEFA Champions League Final",
+    imageObjectFit: "contain",
+    demoDDay: 5,
+    eventName: "Veil in Las Vegas",
+  },
+  {
+    id: "juun-focus",
+    artist: "JUUN - Hearts2Hearts",
+    artistKo: "준 - Hearts2Hearts",
+    itemName: "FOCUS - Jacket Image [1st mini album]",
+    itemNameKo: "FOCUS - 재킷 이미지 [1st mini album]",
+    dressedDate: "2025-Oct",
+    description:
+      "Black satin dress with light blue bow accent worn by JUUN from Hearts2Hearts during FOCUS promotions. Features square neckline, puffed short sleeves, and a large waist bow with cascading ribbons.",
+    descriptionKo:
+      "Hearts2Hearts 준이 FOCUS 활동 시 착용한 블랙 새틴 드레스입니다. 스퀘어 넥라인, 퍼프 소매, 라이트 블루 리본으로 된 웨스트 보우가 특징입니다.",
+    facts: [
+      { label: "album", value: "1st mini album" },
+      { label: "track", value: "FOCUS" },
+      { label: "design", value: "black / light blue bow" },
+    ],
+    images: ["/juun-focus-dress.png", "/juun-focus-stage.png"],
+    topOffer: 5200000,
+    offeredPerson: 980,
+    expirationDate: "2025-03-16",
+    category: "apparel",
+    isJustDropped: false,
+    imageObjectFit: "contain",
+    demoDDay: 4,
+    eventName: "FOCUS - 1st mini album",
+  },
+  {
+    id: "yuha-focus",
+    artist: "YUHA - Hearts2Hearts",
+    artistKo: "유하 - Hearts2Hearts",
+    itemName: "FOCUS - Jacket Image [1st mini album]",
+    itemNameKo: "FOCUS - 재킷 이미지 [1st mini album]",
+    dressedDate: "2025-Oct",
+    description:
+      "Light pink satin two-piece set worn by YUHA from Hearts2Hearts during FOCUS promotions. Features a sleeveless camisole top with spaghetti straps and an A-line wrap skirt with soft sheen.",
+    descriptionKo:
+      "Hearts2Hearts 유하가 FOCUS 활동 시 착용한 라이트 핑크 새틴 투피스입니다. 스파게티 스트랩 캐미솔 탑과 A라인 랩 스커트가 특징입니다.",
+    facts: [
+      { label: "album", value: "1st mini album" },
+      { label: "track", value: "FOCUS" },
+      { label: "design", value: "light pink satin two-piece" },
+    ],
+    images: ["/yuha-focus-outfit.png", "/yuha-focus-stage.png"],
+    topOffer: 4800000,
+    offeredPerson: 756,
+    expirationDate: "2025-03-16",
+    category: "apparel",
+    isJustDropped: false,
+    imageObjectFit: "contain",
+    demoDDay: 12,
+    eventName: "FOCUS - 1st mini album",
   },
   {
     id: "bp-jennie-jacket",
@@ -115,9 +183,10 @@ export const auctionItems: AuctionItem[] = [
     images: [],
     topOffer: 55500000,
     offeredPerson: 6234,
-    expirationDate: "2026-04-15",
+    expirationDate: "2025-03-16",
     category: "apparel",
     isJustDropped: false,
+    demoDDay: 2,
     eventName: "BLACKPINK BORN PINK World Tour Seoul",
   },
   {
@@ -139,10 +208,36 @@ export const auctionItems: AuctionItem[] = [
     images: [],
     topOffer: 42000000,
     offeredPerson: 8901,
-    expirationDate: "2026-06-01",
+    expirationDate: "2025-03-16",
     category: "sneakers",
     isJustDropped: false,
+    demoDDay: 1,
     eventName: "Seven Music Video Filming",
+  },
+  {
+    id: "ian-focus",
+    artist: "IAN - Hearts2Hearts",
+    artistKo: "이안 - Hearts2Hearts",
+    itemName: "FOCUS - Jacket Image [1st mini album]",
+    itemNameKo: "FOCUS - 재킷 이미지 [1st mini album]",
+    dressedDate: "2025-Oct",
+    description:
+      "Sleeveless dress worn by IAN from Hearts2Hearts during FOCUS promotions. Features white and light blue woven design with distinctive bow detail.",
+    descriptionKo:
+      "Hearts2Hearts 이안이 FOCUS 활동 시 착용한 소매 없는 드레스입니다. 화이트와 라이트 블루 직물 디자인과 독특한 리본 디테일이 특징입니다.",
+    facts: [
+      { label: "album", value: "1st mini album" },
+      { label: "track", value: "FOCUS" },
+      { label: "design", value: "white / light blue woven" },
+    ],
+    images: ["/banner-ian.png", "/ian-jacket.png"],
+    topOffer: 6500000,
+    offeredPerson: 1890,
+    expirationDate: "2025-03-16",
+    category: "apparel",
+    isJustDropped: true,
+    demoDDay: 10,
+    eventName: "FOCUS - 1st mini album",
   },
   {
     id: "iu-brooch",
@@ -163,15 +258,23 @@ export const auctionItems: AuctionItem[] = [
     images: [],
     topOffer: 12500000,
     offeredPerson: 5670,
-    expirationDate: "2026-05-15",
+    expirationDate: "2025-03-16",
     category: "accessories",
     isJustDropped: true,
+    demoDDay: 11,
     eventName: "IU HEREH Concert Seoul",
   },
 ]
 
 export function formatKRW(value: number): string {
   return new Intl.NumberFormat("ko-KR").format(value)
+}
+
+/** Returns a date string N days from now (for demo D-Day display). DEMO_D_DAY 사용. */
+export function getDaysFromNow(days: number = DEMO_D_DAY): string {
+  const d = new Date()
+  d.setDate(d.getDate() + days)
+  return d.toISOString().slice(0, 10)
 }
 
 export function getTimeRemaining(expirationDate: string) {

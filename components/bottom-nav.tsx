@@ -2,14 +2,14 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Home, Flame, Gift, ShoppingBag, User } from "lucide-react"
+import { Home, Gavel, Gift, ShoppingBag, User } from "lucide-react"
 
-const navItems = [
-  { href: "/", label: "홈", labelEn: "Home", icon: Home },
-  { href: "/style", label: "스타일", labelEn: "Style", icon: Flame },
-  { href: "/draw", label: "응모", labelEn: "Draw", icon: Gift },
-  { href: "/shop", label: "판매", labelEn: "Shop", icon: ShoppingBag },
-  { href: "/profile", label: "프로필", labelEn: "Profile", icon: User },
+const navItems: { href: string; label: string; icon: typeof Home; hideOnMobile?: boolean }[] = [
+  { href: "/", label: "Home", icon: Home },
+  { href: "/auction", label: "Auction", icon: Gavel },
+  { href: "/draw", label: "Draw", icon: Gift },
+  { href: "/second-market", label: "2nd Market", icon: ShoppingBag, hideOnMobile: true },
+  { href: "/profile", label: "Profile", icon: User },
 ]
 
 export function BottomNav() {
@@ -17,12 +17,12 @@ export function BottomNav() {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-background/95 backdrop-blur-md"
+      className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-background/95 backdrop-blur-md md:hidden"
       role="navigation"
       aria-label="Main navigation"
     >
       <div className="mx-auto flex max-w-lg items-center justify-around py-1.5 pb-[max(0.375rem,env(safe-area-inset-bottom))]">
-        {navItems.map((item) => {
+        {navItems.filter((item) => !item.hideOnMobile).map((item) => {
           const isActive =
             pathname === item.href ||
             (item.href !== "/" && pathname.startsWith(item.href))
@@ -38,7 +38,7 @@ export function BottomNav() {
               aria-current={isActive ? "page" : undefined}
             >
               <item.icon className="h-5 w-5" strokeWidth={isActive ? 2 : 1.5} />
-              <span className={`tracking-wide ${isActive ? "font-semibold" : "font-normal"}`}>
+              <span className={`whitespace-nowrap tracking-wide ${isActive ? "font-semibold" : "font-normal"}`}>
                 {item.label}
               </span>
             </Link>

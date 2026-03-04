@@ -1,8 +1,9 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { formatKRW, type AuctionItem } from "@/lib/data"
+import { formatKRW, getTimeRemaining, getDaysFromNow, DEMO_D_DAY, type AuctionItem } from "@/lib/data"
 import { Heart } from "lucide-react"
 
 interface ItemCardProps {
@@ -13,20 +14,55 @@ interface ItemCardProps {
 
 export function ItemCard({ item, showArtist = true, size = "default" }: ItemCardProps) {
   const hasImage = item.images.length > 0
+  const dDayVal = item.demoDDay ?? DEMO_D_DAY
+  const [timeLeft, setTimeLeft] = useState(() => getTimeRemaining(getDaysFromNow(dDayVal)))
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(getTimeRemaining(getDaysFromNow(dDayVal)))
+    }, 60000)
+    return () => clearInterval(timer)
+  }, [dDayVal])
+
+  const padDay = (n: number) => String(n).padStart(2, "0")
+  const dDay =
+    timeLeft.days > 0
+      ? `D-${padDay(timeLeft.days)}`
+      : timeLeft.total > 0
+        ? `${timeLeft.hours}h ${timeLeft.minutes}m`
+        : "종료"
 
   return (
     <Link
       href={`/item/${item.id}`}
       className="group flex flex-col overflow-hidden border border-border bg-card transition-all hover:border-foreground/20"
     >
-      <div className={`relative overflow-hidden bg-secondary ${size === "large" ? "aspect-[4/5]" : "aspect-square"}`}>
+      <div className={`relative overflow-hidden ${item.imageObjectFit === "contain" ? "flex aspect-square items-center justify-center bg-white" : `bg-secondary ${size === "large" ? "aspect-[4/5]" : "aspect-square"}`}`}>
         {hasImage ? (
-          <Image
-            src={item.images[0]}
-            alt={item.itemName}
-            fill
-            className="object-cover transition-transform duration-700 group-hover:scale-105"
-          />
+          item.imageScale ? (
+            <div
+              className="absolute inset-0 transition-transform duration-700 group-hover:scale-105"
+              style={{
+                transform: `scale(${item.imageScale})${item.imageTranslateY ? ` translateY(${item.imageTranslateY})` : ""}`,
+                transformOrigin: "center center",
+              }}
+            >
+              <Image
+                src={item.images[0]}
+                alt={item.itemName}
+                fill
+                className={item.imageObjectFit === "contain" ? "object-contain" : "object-cover"}
+                style={{ objectPosition: item.imageObjectPosition || "center center" }}
+              />
+            </div>
+          ) : (
+            <Image
+              src={item.images[0]}
+              alt={item.itemName}
+              fill
+              className={`transition-transform duration-700 group-hover:scale-105 ${item.imageObjectFit === "contain" ? "object-contain object-center" : "object-cover"}`}
+            />
+          )
         ) : (
           <div className="flex h-full flex-col items-center justify-center gap-2 bg-secondary">
             <span className="font-serif text-2xl font-bold text-muted-foreground/40">
@@ -37,13 +73,18 @@ export function ItemCard({ item, showArtist = true, size = "default" }: ItemCard
             </span>
           </div>
         )}
-        {item.isJustDropped && (
+        {item.isJustDropped && item.showJustDroppedBadge !== false && (
           <div className="absolute left-0 top-3 bg-foreground px-2.5 py-1">
             <span className="text-[9px] font-semibold uppercase tracking-[0.15em] text-background">
               just dropped
             </span>
           </div>
         )}
+        <div className="absolute bottom-2 right-2 flex items-center justify-center rounded-full border border-foreground/15 bg-background/85 px-3 py-1.5 backdrop-blur-sm">
+          <span className="text-[10px] font-medium leading-none tabular-nums tracking-tight text-foreground">
+            {dDay}
+          </span>
+        </div>
         <button
           className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-background/40 opacity-0 backdrop-blur-sm transition-all group-hover:opacity-100"
           onClick={(e) => {
@@ -61,7 +102,7 @@ export function ItemCard({ item, showArtist = true, size = "default" }: ItemCard
             {item.artist}
           </p>
         )}
-        <p className="line-clamp-2 text-[11px] font-medium leading-relaxed text-foreground">
+        <p className="min-h-9 line-clamp-2 text-[11px] font-medium leading-relaxed text-foreground">
           {item.itemName}
         </p>
         <div className="mt-1.5 flex items-end justify-between">
