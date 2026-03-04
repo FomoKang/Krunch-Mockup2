@@ -44,7 +44,7 @@ export function BannerCarousel() {
                 key={i}
                 className="min-w-0 flex-[0_0_100%] flex-shrink-0 px-0"
               >
-                <div className="relative aspect-[21/12] w-full overflow-hidden rounded-2xl bg-secondary sm:aspect-[3/1.3] lg:aspect-[21/6.5]">
+                <div className="relative aspect-[21/12] w-full overflow-hidden rounded-2xl bg-secondary">
                   <Image
                     src={banner.src}
                     alt={banner.alt}
