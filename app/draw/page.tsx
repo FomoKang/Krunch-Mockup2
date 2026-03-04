@@ -118,7 +118,7 @@ export default function DrawPage() {
     <main className="min-h-screen bg-background pb-24">
       {/* READY + PULLING: New Draw layout */}
       {(drawState === "ready" || drawState === "pulling") && (
-        <div className="flex flex-col px-4 pt-4">
+        <div className="flex flex-col pt-4">
           {/* Draw closes in */}
           <div className="mb-4 flex flex-col items-center">
             <div className="mb-3 flex w-full items-center gap-3">
@@ -263,7 +263,7 @@ export default function DrawPage() {
 
       {/* REVEALING - brief loading before result */}
       {drawState === "revealing" && (
-        <div className="flex min-h-[50vh] flex-col items-center justify-center px-6">
+        <div className="flex min-h-[50vh] flex-col items-center justify-center">
           <div className="h-16 w-16 animate-pulse rounded-full border-2 border-foreground" />
           <p className="mt-4 text-sm font-medium text-muted-foreground">
             Drawing...

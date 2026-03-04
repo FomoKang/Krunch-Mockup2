@@ -74,7 +74,7 @@ export default function ItemDetailPage({
   return (
     <div className="min-h-screen bg-background pb-24">
       {/* Sticky Header - below TopHeader */}
-      <header className="sticky top-14 z-50 flex items-center justify-between border-b border-border/50 bg-background/95 px-4 py-3 backdrop-blur-md">
+      <header className="sticky top-14 z-50 flex items-center justify-between border-b border-border/50 bg-background/95 py-3 backdrop-blur-md">
         <Link href="/" className="flex items-center" aria-label="Go back">
           <ArrowLeft className="h-5 w-5 text-foreground" />
         </Link>
@@ -118,7 +118,7 @@ export default function ItemDetailPage({
           </div>
 
           {/* Artist Name */}
-          <div className="border-b border-border px-5 py-4">
+          <div className="border-b border-border py-4">
             <p className="font-serif text-xl font-bold text-foreground">{item.artist}</p>
           </div>
 
@@ -172,7 +172,7 @@ export default function ItemDetailPage({
 
           {/* Related Items Carousel */}
           {relatedItems.length > 0 && (
-            <div className="flex gap-2.5 overflow-x-auto px-5 py-4">
+            <div className="flex gap-2.5 overflow-x-auto py-4">
               {relatedItems.map((related) => (
                 <Link
                   key={related.id}
@@ -201,7 +201,7 @@ export default function ItemDetailPage({
             {item.facts.map((fact, index) => (
               <div
                 key={fact.label}
-                className={`flex items-center justify-between px-5 py-3.5 ${
+                className={`flex items-center justify-between px-4 py-3.5 lg:px-0 ${
                   index !== item.facts.length - 1 ? "border-b border-border/50" : ""
                 }`}
               >
@@ -209,14 +209,14 @@ export default function ItemDetailPage({
                 <span className="text-xs font-semibold text-foreground">{fact.value}</span>
               </div>
             ))}
-            <div className="flex items-center justify-between border-t border-border/50 px-5 py-3.5">
+            <div className="flex items-center justify-between border-t border-border/50 px-4 py-3.5 lg:px-0">
               <span className="text-xs text-muted-foreground">dressed date</span>
               <span className="text-xs font-semibold text-foreground">{item.dressedDate}</span>
             </div>
           </div>
 
           {/* Description */}
-          <div className="px-5 py-6">
+          <div className="py-6">
             <p className="text-sm italic font-medium text-foreground underline underline-offset-4">
               Description
             </p>
@@ -229,7 +229,7 @@ export default function ItemDetailPage({
           </div>
 
           {/* Facts Section */}
-          <div className="px-5 pb-6">
+          <div className="pb-6">
             <p className="text-sm italic font-medium text-foreground underline underline-offset-4">
               Facts
             </p>

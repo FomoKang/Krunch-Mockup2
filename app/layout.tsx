@@ -40,7 +40,9 @@ export default function RootLayout({
     <html lang="ko">
       <body className={`${inter.variable} ${playfair.variable} font-sans antialiased`}>
         <TopHeader />
-        {children}
+        <div className="mx-auto max-w-6xl px-4 lg:px-12">
+          {children}
+        </div>
         <Footer />
         <Analytics />
       </body>

@@ -29,11 +29,11 @@ function AuctionBlock({
 
   return (
     <>
-      <header className="px-5 pt-6 pb-4">
+      <header className="pt-6 pb-4">
         <h2 className="font-serif text-2xl font-bold text-foreground">{title}</h2>
       </header>
 
-      <div className="mx-5 mb-5 flex items-stretch gap-px overflow-hidden border border-border">
+      <div className="mb-5 flex items-stretch gap-px overflow-hidden border border-border">
         <div className="flex flex-1 flex-col justify-center bg-card px-4 py-3.5">
           <p className="text-[9px] uppercase tracking-[0.15em] text-muted-foreground">
             Active Auctions
@@ -52,7 +52,7 @@ function AuctionBlock({
         </div>
       </div>
 
-      <div className="flex gap-2 px-5 pb-4">
+      <div className="flex gap-2 pb-4">
         {(["popular", "price", "latest"] as const).map((option) => (
           <button
             key={option}
@@ -68,7 +68,7 @@ function AuctionBlock({
         ))}
       </div>
 
-      <section className="grid grid-cols-2 gap-1.5 px-4" aria-label={`${title} items`}>
+      <section className="grid grid-cols-2 gap-1.5" aria-label={`${title} items`}>
         {sorted.map((item) => (
           <ItemCard key={item.id} item={item} />
         ))}

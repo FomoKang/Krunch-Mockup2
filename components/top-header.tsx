@@ -12,7 +12,7 @@ const mainNav: { href: string; label: string; hideOnMobile?: boolean }[] = [
 export function TopHeader() {
   return (
     <header className="sticky top-0 z-40 flex min-h-14 shrink-0 items-center border-b border-border bg-background/95 backdrop-blur-md">
-      <div className="flex w-full items-center justify-between gap-4 px-4 py-3 lg:px-6">
+      <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-3 lg:px-12">
         <Link href="/" className="flex-shrink-0">
           <span className="font-serif text-[1.4625rem] font-bold tracking-tight text-foreground sm:text-[1.625rem]">
             KRUNCH

@@ -14,7 +14,7 @@ export default function ProfilePage() {
   return (
     <main className="min-h-screen bg-background pb-24">
       {/* Profile Header */}
-      <div className="flex flex-col items-center px-5 pt-10 pb-8">
+      <div className="flex flex-col items-center pt-10 pb-8">
         <div className="flex h-20 w-20 items-center justify-center border border-border bg-secondary">
           <User className="h-8 w-8 text-muted-foreground/50" />
         </div>
@@ -33,7 +33,7 @@ export default function ProfilePage() {
         {menuItems.map((item) => (
           <button
             key={item.label}
-            className="flex w-full items-center gap-3.5 border-b border-border/50 px-5 py-4 transition-colors hover:bg-secondary/50"
+            className="flex w-full items-center gap-3.5 border-b border-border/50 px-0 py-4 transition-colors hover:bg-secondary/50"
           >
             <item.icon className="h-4.5 w-4.5 text-muted-foreground" />
             <div className="flex flex-1 flex-col items-start">
@@ -50,7 +50,7 @@ export default function ProfilePage() {
       </div>
 
       {/* Footer Branding */}
-      <div className="mt-16 flex flex-col items-center px-5">
+      <div className="mt-16 flex flex-col items-center">
         <p className="font-serif text-3xl font-bold tracking-tighter text-foreground">
           KRUNCH
         </p>

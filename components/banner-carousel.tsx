@@ -33,8 +33,8 @@ export function BannerCarousel() {
   if (BANNERS.length === 0) return null
 
   return (
-    <section className="px-4 py-4 lg:px-8">
-      <div className="relative overflow-hidden lg:mx-auto lg:max-w-6xl">
+    <section className="py-4">
+      <div className="relative overflow-hidden">
         <div ref={emblaRef} className="overflow-hidden cursor-grab active:cursor-grabbing">
           <div className="flex">
             {BANNERS.map((banner, i) => (

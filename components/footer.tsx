@@ -35,8 +35,8 @@ export function Footer() {
   }
 
   return (
-    <footer className="relative border-t border-border bg-background px-4 py-8 pb-32 md:pb-8">
-      <div className="mx-auto max-w-4xl">
+    <footer className="relative border-t border-border bg-background py-8 pb-32 md:pb-8">
+      <div className="mx-auto max-w-6xl px-4 lg:px-12">
         {/* Top: Guide / Customer Support */}
         <div className="grid grid-cols-2 gap-8 py-6 md:grid-cols-2">
           <div>

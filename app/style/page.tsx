@@ -16,7 +16,7 @@ export default function StylePage() {
   return (
     <main className="min-h-screen bg-background pb-24">
       {/* Header */}
-      <header className="px-5 pt-6 pb-4">
+      <header className="pt-6 pb-4">
         <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
           trending now
         </p>
@@ -26,7 +26,7 @@ export default function StylePage() {
       </header>
 
       {/* Artist Filter Chips */}
-      <div className="flex gap-2 overflow-x-auto px-5 pb-5 scrollbar-none">
+      <div className="flex gap-2 overflow-x-auto pb-5 scrollbar-none">
         <button
           onClick={() => setSelectedArtist(null)}
           className={`shrink-0 border px-4 py-2 text-[11px] font-medium tracking-wide transition-all ${
@@ -53,7 +53,7 @@ export default function StylePage() {
       </div>
 
       {/* Ranking Header */}
-      <div className="flex items-baseline justify-between px-5 pb-3">
+      <div className="flex items-baseline justify-between pb-3">
         <p className="text-xs font-medium text-muted-foreground">
           {selectedArtist || "Most Popular"}
         </p>
@@ -64,7 +64,7 @@ export default function StylePage() {
       </div>
 
       {/* Items Grid */}
-      <section className="grid grid-cols-2 gap-1.5 px-4" aria-label="Trending items">
+      <section className="grid grid-cols-2 gap-1.5" aria-label="Trending items">
         {filtered.map((item, index) => (
           <div key={item.id} className="relative">
             <div className="absolute left-2 top-2 z-10 flex h-6 w-6 items-center justify-center bg-background/80 backdrop-blur-sm">
