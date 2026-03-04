@@ -11,16 +11,16 @@ const mainNav: { href: string; label: string; hideOnMobile?: boolean }[] = [
 
 export function TopHeader() {
   return (
-    <header className="sticky top-0 z-40 flex min-h-14 shrink-0 items-center border-b border-border bg-background/95 backdrop-blur-md">
-      <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-3 lg:px-12">
+    <header className="sticky top-0 z-40 min-h-14 shrink-0 overflow-x-auto border-b border-border bg-background/95 backdrop-blur-md scrollbar-hide">
+      <div className="mx-auto flex min-w-max max-w-full items-center justify-between gap-4 px-4 py-3 lg:max-w-6xl lg:px-12">
         <Link href="/" className="flex-shrink-0">
           <span className="font-serif text-[1.4625rem] font-bold tracking-tight text-foreground sm:text-[1.625rem]">
             KRUNCH
           </span>
         </Link>
 
-        <div className="flex flex-1 items-center justify-end gap-4">
-          <nav className="flex items-center gap-3 whitespace-nowrap md:gap-6" aria-label="Main navigation">
+        <div className="flex shrink-0 items-center gap-3 md:gap-6">
+          <nav className="flex shrink-0 items-center gap-3 md:gap-6" aria-label="Main navigation">
             {mainNav.map((item) => (
               <Link
                 key={item.href}

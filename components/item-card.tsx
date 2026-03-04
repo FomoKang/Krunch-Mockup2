@@ -73,13 +73,6 @@ export function ItemCard({ item, showArtist = true, size = "default" }: ItemCard
             </span>
           </div>
         )}
-        {item.isJustDropped && item.showJustDroppedBadge !== false && (
-          <div className="absolute left-0 top-3 bg-foreground px-2.5 py-1">
-            <span className="text-[9px] font-semibold uppercase tracking-[0.15em] text-background">
-              just dropped
-            </span>
-          </div>
-        )}
         <div className="absolute bottom-2 right-2 flex items-center justify-center rounded-full border border-foreground/15 bg-background/85 px-3 py-1.5 backdrop-blur-sm">
           <span className="text-[10px] font-medium leading-none tabular-nums tracking-tight text-foreground">
             {dDay}
