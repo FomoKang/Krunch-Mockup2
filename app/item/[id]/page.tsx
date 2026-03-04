@@ -2,6 +2,7 @@
 
 import { use, useState, useEffect } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { ArrowLeft, Heart, MoreHorizontal } from "lucide-react"
 import { auctionItems, formatKRW } from "@/lib/data"
 import { CountdownTimer } from "@/components/countdown-timer"
@@ -116,26 +117,80 @@ export default function ItemDetailPage({
             </div>
           </div>
 
-          {/* Artist Name - 지우 먼저 */}
+          {/* Artist Name */}
           <div className="border-b border-border px-5 py-4">
             <p className="font-serif text-xl font-bold text-foreground">{item.artist}</p>
           </div>
 
-          {/* Image placeholder - blank white */}
-          <div className="aspect-square w-full bg-white lg:aspect-[4/3]" />
+          {/* Main Item Image */}
+          {item.images.length > 0 ? (
+            <div className={`relative aspect-square w-full overflow-hidden bg-white lg:aspect-[4/3] ${item.imageObjectFit === "contain" ? "flex items-center justify-center" : ""}`}>
+              {item.imageScale ? (
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    transform: `scale(${item.imageScale})${item.imageTranslateY ? ` translateY(${item.imageTranslateY})` : ""}`,
+                    transformOrigin: "center center",
+                  }}
+                >
+                  <Image
+                    src={item.images[0]}
+                    alt={item.itemName}
+                    fill
+                    className={item.imageObjectFit === "contain" ? "object-contain" : "object-cover"}
+                    style={{ objectPosition: item.imageObjectPosition || "center center" }}
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                  />
+                </div>
+              ) : (
+                <Image
+                  src={item.images[0]}
+                  alt={item.itemName}
+                  fill
+                  className={item.imageObjectFit === "contain" ? "object-contain" : "object-cover"}
+                  style={{ objectPosition: item.imageObjectPosition || "center center" }}
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                />
+              )}
+            </div>
+          ) : (
+            <div className="aspect-square w-full bg-white lg:aspect-[4/3]" />
+          )}
 
-          {/* Related Items Carousel - blank white cells */}
+          {/* Artist Stage / Face Image */}
+          {item.images.length > 1 && (
+            <div className="relative aspect-[4/3] w-full overflow-hidden border-t border-border bg-secondary">
+              <Image
+                src={item.images[1]}
+                alt={`${item.artist} stage`}
+                fill
+                className="object-cover object-center"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+              />
+            </div>
+          )}
+
+          {/* Related Items Carousel */}
           {relatedItems.length > 0 && (
             <div className="flex gap-2.5 overflow-x-auto px-5 py-4">
               {relatedItems.map((related) => (
                 <Link
                   key={related.id}
                   href={`/item/${related.id}`}
-                  className="flex h-16 w-16 shrink-0 items-center justify-center border border-border bg-white transition-all hover:border-foreground/30"
+                  className="relative h-16 w-16 shrink-0 overflow-hidden border border-border bg-white transition-all hover:border-foreground/30"
                 >
-                  <span className="font-serif text-xs text-muted-foreground/40">
-                    {related.itemName.slice(0, 4)}
-                  </span>
+                  {related.images.length > 0 ? (
+                    <Image
+                      src={related.images[0]}
+                      alt={related.itemName}
+                      fill
+                      className="object-cover"
+                    />
+                  ) : (
+                    <span className="flex h-full w-full items-center justify-center font-serif text-xs text-muted-foreground/40">
+                      {related.itemName.slice(0, 4)}
+                    </span>
+                  )}
                 </Link>
               ))}
             </div>
