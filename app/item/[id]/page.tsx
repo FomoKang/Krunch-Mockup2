@@ -4,7 +4,12 @@ import { use, useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { ArrowLeft, Heart, MoreHorizontal } from "lucide-react"
-import { auctionItems, formatKRW } from "@/lib/data"
+import {
+  auctionItems,
+  formatKRW,
+  getArchiveEntityDisplayName,
+  getItemCredits,
+} from "@/lib/data"
 import { CountdownTimer } from "@/components/countdown-timer"
 import { OfferInput } from "@/components/offer-input"
 import { BottomNav } from "@/components/bottom-nav"
@@ -70,6 +75,10 @@ export default function ItemDetailPage({
   const relatedItems = auctionItems.filter(
     (i) => i.artist === item.artist && i.id !== item.id
   )
+  const credits = getItemCredits(item)
+  const brands = credits.filter((credit) => credit.role === "brand")
+  const ateliers = credits.filter((credit) => credit.role === "atelier")
+  const stylists = credits.filter((credit) => credit.role === "stylist")
   const primaryDetailImage = item.images[1] ?? item.images[0]
   const secondaryDetailImage = item.images.length > 1 ? item.images[0] : null
 
@@ -172,6 +181,63 @@ export default function ItemDetailPage({
             </div>
           )}
 
+          {(brands.length > 0 || ateliers.length > 0 || stylists.length > 0) && (
+            <section className="border-t border-border bg-card px-4 py-5">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+                Credits
+              </p>
+              <div className="mt-4 space-y-3">
+                {brands.length > 0 && (
+                  <div className="grid grid-cols-[96px_minmax(0,1fr)] items-start gap-4">
+                    <span className="pt-0.5 text-xs text-muted-foreground">Brand</span>
+                    <div className="min-w-0">
+                      {brands.map((credit) => (
+                        <p
+                          key={credit.entityId}
+                          className="text-sm leading-relaxed font-medium text-foreground break-words"
+                        >
+                          {getArchiveEntityDisplayName(credit.entity)}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {ateliers.length > 0 && (
+                  <div className="grid grid-cols-[96px_minmax(0,1fr)] items-start gap-4">
+                    <span className="pt-0.5 text-xs text-muted-foreground">Production</span>
+                    <div className="min-w-0">
+                      {ateliers.map((credit) => (
+                        <Link
+                          key={credit.entityId}
+                          href={`/archive/${credit.entityId}`}
+                          className="block text-sm leading-relaxed font-medium text-foreground underline decoration-border underline-offset-4 transition-colors hover:text-muted-foreground break-words"
+                        >
+                          {getArchiveEntityDisplayName(credit.entity)}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {stylists.length > 0 && (
+                  <div className="grid grid-cols-[96px_minmax(0,1fr)] items-start gap-4">
+                    <span className="pt-0.5 text-xs text-muted-foreground">Stylist</span>
+                    <div className="min-w-0">
+                      {stylists.map((credit) => (
+                        <Link
+                          key={credit.entityId}
+                          href={`/archive/${credit.entityId}`}
+                          className="block text-sm leading-relaxed font-medium text-foreground underline decoration-border underline-offset-4 transition-colors hover:text-muted-foreground break-words"
+                        >
+                          {getArchiveEntityDisplayName(credit.entity)}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </section>
+          )}
+
           {/* Related Items Carousel */}
           {relatedItems.length > 0 && (
             <div className="flex gap-2.5 overflow-x-auto py-4">
@@ -203,17 +269,21 @@ export default function ItemDetailPage({
             {item.facts.map((fact, index) => (
               <div
                 key={fact.label}
-                className={`flex items-center justify-between px-4 py-3.5 lg:px-0 ${
+                className={`grid grid-cols-[96px_minmax(0,1fr)] items-start gap-4 px-4 py-3.5 ${
                   index !== item.facts.length - 1 ? "border-b border-border/50" : ""
                 }`}
               >
-                <span className="text-xs text-muted-foreground">{fact.label}</span>
-                <span className="text-xs font-semibold text-foreground">{fact.value}</span>
+                <span className="pt-0.5 text-xs text-muted-foreground">{fact.label}</span>
+                <span className="min-w-0 text-xs leading-relaxed font-semibold text-foreground break-words">
+                  {fact.value}
+                </span>
               </div>
             ))}
-            <div className="flex items-center justify-between border-t border-border/50 px-4 py-3.5 lg:px-0">
-              <span className="text-xs text-muted-foreground">dressed date</span>
-              <span className="text-xs font-semibold text-foreground">{item.dressedDate}</span>
+            <div className="grid grid-cols-[96px_minmax(0,1fr)] items-start gap-4 border-t border-border/50 px-4 py-3.5">
+              <span className="pt-0.5 text-xs text-muted-foreground">dressed date</span>
+              <span className="min-w-0 text-xs leading-relaxed font-semibold text-foreground break-words">
+                {item.dressedDate}
+              </span>
             </div>
           </div>
 

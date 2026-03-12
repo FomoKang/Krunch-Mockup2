@@ -25,7 +25,47 @@ export interface AuctionItem {
   /** 메인 D-Day 배지. 없으면 DEMO_D_DAY 사용. 각 아이템마다 다르게 설정 */
   demoDDay?: number
   eventName?: string
+  credits?: ItemCredit[]
 }
+
+export interface ArchiveEntity {
+  id: string
+  name: string
+  category: "brand" | "atelier" | "stylist"
+  description: string
+}
+
+export interface ItemCredit {
+  entityId: string
+  role: "brand" | "atelier" | "stylist"
+}
+
+export const archiveEntities: ArchiveEntity[] = [
+  {
+    id: "ralph-lauren-purple-label",
+    name: "Ralph Lauren Purple Label",
+    category: "brand",
+    description: "Luxury menswear brand credited on V's suit from the Veautiful Days photo folio.",
+  },
+  {
+    id: "bcc-couture",
+    name: "B.C.COUTURE",
+    category: "atelier",
+    description: "Production atelier behind multiple custom stage and editorial outfits in the archive.",
+  },
+  {
+    id: "kim-sungbeom",
+    name: "김성범",
+    category: "stylist",
+    description: "Stylist credited on V's Veautiful Days suit collaboration.",
+  },
+  {
+    id: "kim-wook",
+    name: "김욱",
+    category: "stylist",
+    description: "Stylist credited on Jiwoo and IAN's Hearts2Hearts looks.",
+  },
+]
 
 export const auctionItems: AuctionItem[] = [
   {
@@ -55,6 +95,11 @@ export const auctionItems: AuctionItem[] = [
     imageScale: 0.9,
     demoDDay: 9,
     eventName: "BTS Photo Folio 'Veautiful Days'",
+    credits: [
+      { entityId: "ralph-lauren-purple-label", role: "brand" },
+      { entityId: "bcc-couture", role: "atelier" },
+      { entityId: "kim-sungbeom", role: "stylist" },
+    ],
   },
   {
     id: "jiwoo-rude",
@@ -85,6 +130,10 @@ export const auctionItems: AuctionItem[] = [
     imageObjectPosition: "center bottom",
     demoDDay: 8,
     eventName: "RUDE! - MV & Fanmeeting",
+    credits: [
+      { entityId: "bcc-couture", role: "atelier" },
+      { entityId: "kim-wook", role: "stylist" },
+    ],
   },
   {
     id: "taemin-veil",
@@ -240,6 +289,10 @@ export const auctionItems: AuctionItem[] = [
     imageScale: 0.95,
     demoDDay: 10,
     eventName: "FOCUS - 1st mini album",
+    credits: [
+      { entityId: "bcc-couture", role: "atelier" },
+      { entityId: "kim-wook", role: "stylist" },
+    ],
   },
   {
     id: "iu-brooch",
@@ -286,4 +339,45 @@ export function getTimeRemaining(expirationDate: string) {
   const hours = Math.max(0, Math.floor((total / (1000 * 60 * 60)) % 24))
   const days = Math.max(0, Math.floor(total / (1000 * 60 * 60 * 24)))
   return { total, days, hours, minutes, seconds }
+}
+
+export function getArchiveEntityById(entityId: string) {
+  return archiveEntities.find((entity) => entity.id === entityId)
+}
+
+export function getArchiveEntityDisplayName(entity: ArchiveEntity) {
+  if (entity.id === "bcc-couture") {
+    return "Maison Celeste"
+  }
+
+  if (entity.id === "kim-sungbeom") {
+    return "Evan Clair"
+  }
+
+  if (entity.id === "kim-wook") {
+    return "Lena March"
+  }
+
+  return entity.name
+}
+
+export function getItemCredits(item: AuctionItem) {
+  return (item.credits ?? [])
+    .map((credit) => {
+      const entity = getArchiveEntityById(credit.entityId)
+      return entity ? { ...credit, entity } : null
+    })
+    .filter((credit): credit is ItemCredit & { entity: ArchiveEntity } => credit !== null)
+}
+
+export function getItemsByArchiveEntity(entityId: string) {
+  return auctionItems.filter((item) =>
+    (item.credits ?? []).some((credit) => credit.entityId === entityId)
+  )
+}
+
+export function getArchiveEntitiesByCategory(
+  category: ArchiveEntity["category"]
+) {
+  return archiveEntities.filter((entity) => entity.category === category)
 }
