@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
+import { BottomNav } from "@/components/bottom-nav"
 import {
   getArchiveEntityDisplayName,
   getArchiveEntitiesByCategory,
@@ -85,6 +86,8 @@ export default function ArchiveIndexPage() {
           </section>
         ))}
       </div>
+
+      <BottomNav />
     </main>
   )
 }

@@ -2,6 +2,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { notFound } from "next/navigation"
 import { ArrowLeft } from "lucide-react"
+import { BottomNav } from "@/components/bottom-nav"
 import {
   formatKRW,
   getArchiveEntityById,
@@ -129,6 +130,7 @@ export default async function ArchivePage({
           })}
         </section>
       </div>
+      <BottomNav />
     </main>
   )
 }

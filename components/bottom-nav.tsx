@@ -2,12 +2,13 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Home, Gavel, Gift, ShoppingBag, User } from "lucide-react"
+import { Archive, Home, Gavel, Gift, ShoppingBag, User } from "lucide-react"
 
 const navItems: { href: string; label: string; icon: typeof Home; hideOnMobile?: boolean }[] = [
   { href: "/", label: "Home", icon: Home },
   { href: "/auction", label: "Auction", icon: Gavel },
   { href: "/draw", label: "Draw", icon: Gift },
+  { href: "/archive", label: "Archive", icon: Archive },
   { href: "/second-market", label: "2nd Market", icon: ShoppingBag, hideOnMobile: true },
   { href: "/profile", label: "Profile", icon: User },
 ]

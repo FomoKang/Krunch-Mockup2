@@ -6,7 +6,7 @@ const mainNav: { href: string; label: string; hideOnMobile?: boolean }[] = [
   { href: "/", label: "HOME" },
   { href: "/auction", label: "AUCTION" },
   { href: "/draw", label: "DRAW" },
-  { href: "/archive", label: "ARCHIVE", hideOnMobile: true },
+  { href: "/archive", label: "ARCHIVE" },
   { href: "/second-market", label: "2ND MARKET", hideOnMobile: true },
 ]
 
