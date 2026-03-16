@@ -81,6 +81,7 @@ export default function ItemDetailPage({
   const stylists = credits.filter((credit) => credit.role === "stylist")
   const primaryDetailImage = item.images[1] ?? item.images[0]
   const secondaryDetailImage = item.images.length > 1 ? item.images[0] : null
+  const showBlurBackdrop = item.imageObjectFit !== "contain"
 
   return (
     <div className="min-h-screen bg-background pb-24">
@@ -136,15 +137,19 @@ export default function ItemDetailPage({
           {/* Main Item Image */}
           {primaryDetailImage ? (
             <div className="relative aspect-square w-full overflow-hidden bg-white lg:aspect-[4/3]">
-              <Image
-                src={primaryDetailImage}
-                alt={item.itemName}
-                fill
-                className="object-cover blur-2xl scale-110 opacity-60"
-                style={{ objectPosition: item.imageObjectPosition || "center top" }}
-                sizes="(max-width: 1024px) 100vw, 50vw"
-              />
-              <div className="absolute inset-0 bg-white/30" />
+              {showBlurBackdrop && (
+                <>
+                  <Image
+                    src={primaryDetailImage}
+                    alt={item.itemName}
+                    fill
+                    className="object-cover blur-2xl scale-110 opacity-60"
+                    style={{ objectPosition: item.imageObjectPosition || "center top" }}
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                  />
+                  <div className="absolute inset-0 bg-white/30" />
+                </>
+              )}
               <Image
                 src={primaryDetailImage}
                 alt={item.itemName}
@@ -161,15 +166,19 @@ export default function ItemDetailPage({
           {/* Secondary Item Image */}
           {secondaryDetailImage && (
             <div className="relative aspect-[4/3] w-full overflow-hidden border-t border-border bg-white">
-              <Image
-                src={secondaryDetailImage}
-                alt={`${item.artist} stage`}
-                fill
-                className="object-cover blur-2xl scale-110 opacity-55"
-                style={{ objectPosition: item.imageObjectPosition || "center top" }}
-                sizes="(max-width: 1024px) 100vw, 50vw"
-              />
-              <div className="absolute inset-0 bg-white/35" />
+              {showBlurBackdrop && (
+                <>
+                  <Image
+                    src={secondaryDetailImage}
+                    alt={`${item.artist} stage`}
+                    fill
+                    className="object-cover blur-2xl scale-110 opacity-55"
+                    style={{ objectPosition: item.imageObjectPosition || "center top" }}
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                  />
+                  <div className="absolute inset-0 bg-white/35" />
+                </>
+              )}
               <Image
                 src={secondaryDetailImage}
                 alt={`${item.artist} item`}

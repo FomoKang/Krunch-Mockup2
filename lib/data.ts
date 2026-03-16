@@ -22,6 +22,8 @@ export interface AuctionItem {
   imageScale?: number
   imageTranslateY?: string
   imageObjectPosition?: string
+  archiveImageScale?: number
+  archiveImageTranslateY?: string
   /** 메인 D-Day 배지. 없으면 DEMO_D_DAY 사용. 각 아이템마다 다르게 설정 */
   demoDDay?: number
   eventName?: string
@@ -128,6 +130,7 @@ export const auctionItems: AuctionItem[] = [
     imageScale: 1.25,
     imageTranslateY: "7%",
     imageObjectPosition: "center bottom",
+    archiveImageScale: 1,
     demoDDay: 8,
     eventName: "RUDE! - MV & Fanmeeting",
     credits: [
@@ -287,6 +290,7 @@ export const auctionItems: AuctionItem[] = [
     isJustDropped: true,
     imageObjectFit: "contain",
     imageScale: 0.95,
+    archiveImageScale: 0.84,
     demoDDay: 10,
     eventName: "FOCUS - 1st mini album",
     credits: [

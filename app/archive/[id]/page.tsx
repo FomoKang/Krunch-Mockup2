@@ -73,13 +73,37 @@ export default async function ArchivePage({
               >
                 <div className="relative aspect-[4/5] overflow-hidden bg-white">
                   {previewImage ? (
-                    <Image
-                      src={previewImage}
-                      alt={item.itemName}
-                      fill
-                      className="object-contain transition-transform duration-500 group-hover:scale-[1.03]"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                    />
+                    item.archiveImageScale ? (
+                      <div
+                        className="absolute inset-0 transition-transform duration-500 group-hover:scale-[1.03]"
+                        style={{
+                          transform: `scale(${item.archiveImageScale})${
+                            item.archiveImageTranslateY
+                              ? ` translateY(${item.archiveImageTranslateY})`
+                              : ""
+                          }`,
+                          transformOrigin: "center center",
+                        }}
+                      >
+                        <Image
+                          src={previewImage}
+                          alt={item.itemName}
+                          fill
+                          className="object-contain"
+                          style={{ objectPosition: item.imageObjectPosition || "center center" }}
+                          sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                        />
+                      </div>
+                    ) : (
+                      <Image
+                        src={previewImage}
+                        alt={item.itemName}
+                        fill
+                        className="object-contain transition-transform duration-500 group-hover:scale-[1.03]"
+                        style={{ objectPosition: item.imageObjectPosition || "center center" }}
+                        sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                      />
+                    )
                   ) : (
                     <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
                       No image

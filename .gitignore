@@ -11,3 +11,7 @@ node_modules/
 .vercel
 *.tsbuildinfo
 .codex-dev*.log
+
+# Local-only artifacts
+package-lock.json
+Krunch-mockup/

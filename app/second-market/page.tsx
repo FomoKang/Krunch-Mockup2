@@ -1,6 +1,5 @@
 "use client"
 
-import { Clock3, Sparkles } from "lucide-react"
 import { BottomNav } from "@/components/bottom-nav"
 
 export default function SecondMarketPage() {
@@ -18,18 +17,8 @@ export default function SecondMarketPage() {
             Coming soon
           </h1>
           <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-            We are crafting a cleaner and sharper second market experience.
+            Premium resale is on the way.
           </p>
-
-          <div className="mt-6 flex items-center justify-center gap-2 rounded-full border border-border bg-background/80 px-4 py-2.5 text-xs text-foreground">
-            <Clock3 className="h-3.5 w-3.5" />
-            Premium resale zone is under preparation.
-          </div>
-
-          <div className="mt-4 inline-flex items-center gap-1 text-[11px] font-medium text-muted-foreground">
-            <Sparkles className="h-3.5 w-3.5" />
-            New feature teaser
-          </div>
         </div>
       </section>
 

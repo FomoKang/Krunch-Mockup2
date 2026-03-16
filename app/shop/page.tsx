@@ -1,15 +1,39 @@
 "use client"
 
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { auctionItems, formatKRW, type AuctionItem } from "@/lib/data"
 import { ItemCard } from "@/components/item-card"
 import { BottomNav } from "@/components/bottom-nav"
 
-const LOOP_COUNT = 12
+function hashStringToUint32(value: string): number {
+  let hash = 2166136261
+  for (let i = 0; i < value.length; i++) {
+    hash ^= value.charCodeAt(i)
+    hash = Math.imul(hash, 16777619)
+  }
+  return hash >>> 0
+}
 
-function loopItems<T>(items: T[], count: number): T[] {
-  if (items.length === 0) return []
-  return Array.from({ length: count }, (_, index) => items[index % items.length])
+function mulberry32(seed: number) {
+  return () => {
+    let t = (seed += 0x6d2b79f5)
+    t = Math.imul(t ^ (t >>> 15), t | 1)
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61)
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+  }
+}
+
+function stableShuffle<T>(items: T[], seedKey: string): T[] {
+  if (items.length <= 1) return items
+  const rng = mulberry32(hashStringToUint32(seedKey))
+  const out = [...items]
+
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1))
+    ;[out[i], out[j]] = [out[j], out[i]]
+  }
+
+  return out
 }
 
 const imageOnlyItems = auctionItems.filter((item) => item.images.length > 0)
@@ -24,14 +48,18 @@ function AuctionBlock({
 }: {
   title: string
   items: AuctionItem[]
-  sortBy: "popular" | "price" | "latest"
-  setSortBy: (v: "popular" | "price" | "latest") => void
+  sortBy: "shuffle" | "popular" | "price" | "latest"
+  setSortBy: (v: "shuffle" | "popular" | "price" | "latest") => void
 }) {
-  const sorted = [...items].sort((a, b) => {
-    if (sortBy === "price") return b.topOffer - a.topOffer
-    if (sortBy === "latest") return (a.demoDDay ?? 10) - (b.demoDDay ?? 10)
-    return b.offeredPerson - a.offeredPerson
-  })
+  const sorted = useMemo(() => {
+    if (sortBy === "shuffle") return items
+
+    return [...items].sort((a, b) => {
+      if (sortBy === "price") return b.topOffer - a.topOffer
+      if (sortBy === "latest") return (a.demoDDay ?? 10) - (b.demoDDay ?? 10)
+      return b.offeredPerson - a.offeredPerson
+    })
+  }, [items, sortBy])
 
   const totalBids = items.reduce((sum, item) => sum + item.offeredPerson, 0)
 
@@ -53,7 +81,7 @@ function AuctionBlock({
       </div>
 
       <div className="flex gap-2 pb-4">
-        {(["popular", "price", "latest"] as const).map((option) => (
+        {(["shuffle", "popular", "price", "latest"] as const).map((option) => (
           <button
             key={option}
             onClick={() => setSortBy(option)}
@@ -63,14 +91,20 @@ function AuctionBlock({
                 : "border-border text-muted-foreground hover:border-foreground/30 hover:text-foreground"
             }`}
           >
-            {option === "popular" ? "Popular" : option === "price" ? "Price" : "Latest"}
+            {option === "shuffle"
+              ? "Shuffle"
+              : option === "popular"
+                ? "Popular"
+                : option === "price"
+                  ? "Price"
+                  : "Latest"}
           </button>
         ))}
       </div>
 
       <section className="grid grid-cols-2 gap-1.5" aria-label={`${title} items`}>
-        {sorted.map((item, index) => (
-          <ItemCard key={`${item.id}-${index}`} item={item} />
+        {sorted.map((item) => (
+          <ItemCard key={item.id} item={item} />
         ))}
       </section>
     </>
@@ -78,17 +112,23 @@ function AuctionBlock({
 }
 
 export default function ShopPage() {
-  const [premiumSort, setPremiumSort] = useState<"popular" | "price" | "latest">("popular")
-  const [hybridSort, setHybridSort] = useState<"popular" | "price" | "latest">("popular")
+  const [premiumSort, setPremiumSort] = useState<"shuffle" | "popular" | "price" | "latest">("shuffle")
+  const [hybridSort, setHybridSort] = useState<"shuffle" | "popular" | "price" | "latest">("shuffle")
 
-  const loopedPremium = loopItems(premiumItems, LOOP_COUNT)
-  const loopedHybrid = loopItems(hybridItems, LOOP_COUNT)
+  const shuffledPremium = useMemo(
+    () => stableShuffle(premiumItems, `shop:premium:${premiumItems.map((i) => i.id).join("|")}`),
+    []
+  )
+  const shuffledHybrid = useMemo(
+    () => stableShuffle(hybridItems, `shop:hybrid:${hybridItems.map((i) => i.id).join("|")}`),
+    []
+  )
 
   return (
     <main className="min-h-screen bg-background pb-24">
       <AuctionBlock
         title="Premium Auction"
-        items={loopedPremium}
+        items={shuffledPremium}
         sortBy={premiumSort}
         setSortBy={setPremiumSort}
       />
@@ -97,7 +137,7 @@ export default function ShopPage() {
 
       <AuctionBlock
         title="Hybrid Auctions"
-        items={loopedHybrid}
+        items={shuffledHybrid}
         sortBy={hybridSort}
         setSortBy={setHybridSort}
       />
